@@ -1,0 +1,71 @@
+import math
+import logging
+import threading
+import time
+
+LOG_FORMAT = '%(asctime)s %(threadName)-17s %(levelname)-8s %(message)s'
+logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
+
+semaphore = threading.Semaphore(0)
+item = 0
+
+# ==============================
+# Mensuration Calculations
+# ==============================
+def mensuration_calculations():
+    r = 7.5
+    l, b, h = 12, 8, 5
+    a = 6
+
+    area_circle = math.pi * r ** 2
+    peri_circle = 2 * math.pi * r
+    area_rect = l * b
+    peri_rect = 2 * (l + b)
+    area_square = a ** 2
+    peri_square = 4 * a
+    area_triangle = 0.5 * b * h
+
+    sa_cube = 6 * a ** 2
+    vol_cube = a ** 3
+    sa_cuboid = 2 * (l*b + b*h + h*l)
+    vol_cuboid = l * b * h
+    sa_cylinder = 2 * math.pi * r * (r + h)
+    vol_cylinder = math.pi * r ** 2 * h
+
+    total = (
+        area_circle + peri_circle + area_rect + peri_rect +
+        area_square + peri_square + area_triangle +
+        sa_cube + vol_cube + sa_cuboid + vol_cuboid +
+        sa_cylinder + vol_cylinder
+    )
+
+    return total
+
+# ==============================
+# Producer and Consumer
+# ==============================
+def consumer():
+    logging.info('Consumer is waiting')
+    semaphore.acquire()
+    logging.info(f'Consumer received final computed value: {item:.2f}')
+
+def producer():
+    global item
+    time.sleep(3)
+    item = mensuration_calculations()  # <--- Calculate mensuration here
+    logging.info(f'Producer calculated and sent value: {item:.2f}')
+    semaphore.release()
+
+def main():
+    for _ in range(10):
+        t1 = threading.Thread(target=consumer)
+        t2 = threading.Thread(target=producer)
+
+        t1.start()
+        t2.start()
+
+        t1.join()
+        t2.join()
+
+if __name__ == "__main__":
+    main()
