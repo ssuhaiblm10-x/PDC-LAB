@@ -38,7 +38,7 @@ class AnotherClass (Myclass):
 instance = AnotherClass ("hello")
 print("instance.myfunction (1, 2) " , instance.myfunction (1, 2))
 
-instance.test = 10
+
 print("instance.test " , instance.test)
 
 ------------------------------------------------------------------------------
