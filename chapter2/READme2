@@ -1,0 +1,60 @@
+1. Threading
+Threading means running multiple threads within a single process.
+ Each thread shares the same memory space, so they can work together on common data — but that also means they can interfere with each other if not carefully managed.
+Example: Two threads updating the same variable at the same time can cause inconsistent results — this is called a race condition.
+
+
+Threads are ideal for I/O-bound tasks (like reading files or network calls).
+
+
+
+ 2. Synchronization
+Synchronization is the technique of controlling access to shared resources in a multithreaded environment.
+ It ensures that only one thread uses a shared resource at a time, preventing data corruption and race conditions.
+Common synchronization tools:
+Locks (Mutexes): Allow only one thread at a time to access a section of code.
+ Example: threading.Lock() in Python.
+
+
+Join(): Ensures one thread finishes before another continues.
+
+
+Events / Conditions: Allow threads to wait for specific signals before proceeding.
+
+
+Think of synchronization as “taking turns” when using shared resources.
+
+ 3. Semaphores
+A Semaphore is a special kind of synchronization tool used to control access to a shared resource with a limited number of instances.
+It maintains a counter.
+
+
+When a thread wants access, it decreases the counter.
+
+
+When it’s done, it increases the counter.
+
+
+If the counter is zero, new threads must wait until others release the resource.
+
+
+Example:
+A semaphore initialized to 3 allows 3 threads to access a shared resource simultaneously.
+
+
+Used in resource-limited systems (like connection pools or printers).
+
+
+In Python:
+import threading
+semaphore = threading.Semaphore(3)
+
+
+ Summary
+Threading → Running multiple threads in one process.
+
+
+Synchronization → Prevents threads from conflicting when sharing data.
+
+
+Semaphores → A synchronization tool that limits the number of threads accessing a shared resource simultaneously.
